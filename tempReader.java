@@ -17,7 +17,7 @@ public class tempReader {
 			//Get the average thermistor reading
 			int thermistorReading = getThermistorReading(robot);
 			
-			double temp = (thermistorReading - 7.155080214)/259.4679144;
+			double temp = ((thermistorReading - 7.155080214)/259.4679144) + 6;
 			
 			//Print the results
 			System.out.println("The probe reads the value: " + thermistorReading);
