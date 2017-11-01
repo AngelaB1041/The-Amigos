@@ -1,0 +1,13 @@
+public void leaveStartBox() {
+		RXTXRobot r = new ArduinoNano();
+		for (int x=0; x < 100; ++x) 
+		{ 
+			double dist = r.getPing(PING_PIN1);
+		}  
+		r.runMotor(RXTXRobot.MOTOR1, 500, RXTXRobot.MOTOR2, 500, 0);
+		if(PING_PIN1 > 15 ) {
+		r.runMotor(RXTXRobot.MOTOR1, 500, RXTXRobot.MOTOR2, 500, 0); // Run both motors forward indefinitely 
+		} else {
+		r.runMotor(RXTXRobot.MOTOR1,0,RXTXRobot.MOTOR2,0,0); // Stop both motors 
+		}
+	}
