@@ -1,0 +1,33 @@
+import rxtxrobot.*;
+
+public class Test {
+	final private static int PING_PIN = 11;
+	public static void main(String[] args) {
+		RXTXRobot r = new ArduinoUno();
+		r.setPort("COM9"); 
+		r.connect(); 
+		r.attachMotor(RXTXRobot.MOTOR1, 5);
+		r.attachMotor(RXTXRobot.MOTOR2, 6);
+		
+		double dist = 0;
+		while(true) {
+			for(int i = 0 ; i < 100; i++) {
+			dist = r.getPing(PING_PIN);}
+			
+			System.out.println("The reading was" + dist);
+			System.out.println();
+			if(dist >= 60)
+			{
+				r.runMotor(RXTXRobot.MOTOR1, 150, RXTXRobot.MOTOR2, -150, 0);
+				dist = r.getPing(PING_PIN);
+				System.out.printf("%f cm\n", dist);
+			}
+			else 
+			{ 
+				r.runMotor(RXTXRobot.MOTOR1, 0, RXTXRobot.MOTOR2, 0, 0);// keep going straight
+				break;
+			}
+			//break;
+		}s
+	}
+}
