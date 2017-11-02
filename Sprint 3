@@ -1,0 +1,22 @@
+import rxtxrobot.*;
+public class ActualSprint3 {
+	final private static int PING_PIN = 11;
+	public static void main(String[] args) 
+	{ 
+		RXTXRobot r = new ArduinoNano();  
+		r.setPort("COM9"); 
+		r.connect(); 
+		r.attachMotor(RXTXRobot.MOTOR1, 5);
+		r.attachMotor(RXTXRobot.MOTOR2, 6);
+		
+		//r.runMotor(RXTXRobot.MOTOR2, -175, RXTXRobot.MOTOR1, 175, 1600); 
+		//r.sleep(1000);
+		//r.runMotor(RXTXRobot.MOTOR1, 250, 1900); 
+		//r.sleep(1000);
+		//r.runMotor(RXTXRobot.MOTOR1, 250, RXTXRobot.MOTOR2, -250, 3500);
+		//r.sleep(1000);
+		r.runMotor(RXTXRobot.MOTOR1, 245, RXTXRobot.MOTOR2, -260, 3000);
+		r.close();
+		
+	}
+}
