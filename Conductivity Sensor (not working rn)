@@ -1,0 +1,13 @@
+import rxtxrobot.*;
+
+public class Conductivity {
+	public static void main(String[] args) {
+		RXTXRobot r = new ArduinoNano();
+		r.refreshAnalogPins();
+		r.refreshDigitalPins();
+		
+		int conductivity = r.getConductivity();
+		System.out.println("The probe reads: " + conductivity);
+		r.close();
+	}
+}
