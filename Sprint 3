@@ -9,13 +9,20 @@ public class ActualSprint3 {
 		r.attachMotor(RXTXRobot.MOTOR1, 5);
 		r.attachMotor(RXTXRobot.MOTOR2, 6);
 		
-		//r.runMotor(RXTXRobot.MOTOR2, -175, RXTXRobot.MOTOR1, 175, 1600); 
-		//r.sleep(1000);
-		//r.runMotor(RXTXRobot.MOTOR1, 250, 1900); 
-		//r.sleep(1000);
-		//r.runMotor(RXTXRobot.MOTOR1, 250, RXTXRobot.MOTOR2, -250, 3500);
-		//r.sleep(1000);
-		r.runMotor(RXTXRobot.MOTOR1, 245, RXTXRobot.MOTOR2, -260, 3000);
+		r.runMotor(RXTXRobot.MOTOR2, -175, RXTXRobot.MOTOR1, 175, 1600); // leave the start box
+		r.sleep(1000);
+		r.runMotor(RXTXRobot.MOTOR1, 250, 1900); //turn right 
+		r.sleep(1000);
+		r.runMotor(RXTXRobot.MOTOR1, 250, RXTXRobot.MOTOR2, -250, 3500); // move forward, stop in front of the ramp 
+		r.sleep(1000);
+		r.runMotor(RXTXRobot.MOTOR1, 245, RXTXRobot.MOTOR2, -260, 3000); // go up the ramp 
+		
+		r.attachServo(RXTXRobot.SERVO1, 4); //Connect the servos to the Arduino 
+		r.moveServo(RXTXRobot.SERVO1, 135); // Move Servo 1 to location 30 
+		r.sleep(5000);
+		r.moveServo(RXTXRobot.SERVO1, 90);
+		
+
 		r.close();
 		
 	}
