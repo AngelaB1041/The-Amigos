@@ -1,0 +1,27 @@
+double dist = 0;
+			boolean reading=true;
+			
+			// Find barrier
+			while(reading==true) {
+				
+				// Get distance measurement
+				dist = r.getPing(PING_PIN);			
+				System.out.println("The reading was" + dist);
+				System.out.println();
+				
+
+				if(dist >= 5) // No barrier
+				{
+					// Going forward
+					r.runMotor(RXTXRobot.MOTOR1, 245, RXTXRobot.MOTOR2, -260, 3000);
+					dist = r.getPing(PING_PIN);
+					System.out.printf("%f cm\n", dist);
+					reading = false;
+				}
+				else //barrier
+				{ 
+					r.runMotor(RXTXRobot.MOTOR1, 0, RXTXRobot.MOTOR2, 0, 0);
+					break;
+				}
+				//break;
+			}
