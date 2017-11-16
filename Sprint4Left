@@ -1,0 +1,265 @@
+import rxtxrobot.*;
+
+public class Sprint4Left {
+	
+	final public static int PING_PIN1 = 11; // 	FRONT
+	final public static int PING_PIN2 = 10; // SIDE
+		
+	public static void main(String[] args) {
+			RXTXRobot r = new ArduinoUno();
+			r.setPort("COM9");
+			r.connect();
+			r.attachMotor(RXTXRobot.MOTOR1, 5); //LEFT MOTOR
+			r.attachMotor(RXTXRobot.MOTOR2, 6); //RIGHT MOTOR
+			r.attachServo(RXTXRobot.SERVO1, 8); //CONDUCTIVITY ARM SERVO
+			r.attachServo(RXTXRobot.SERVO2, 4); //BOOM SERVO
+
+			
+			r.runMotor(RXTXRobot.MOTOR2, -250, RXTXRobot.MOTOR1, 250, 1100); //move out of start box
+			r.sleep(1000);
+			r.runMotor(RXTXRobot.MOTOR1, 260, 2500); //turn right
+			r.sleep(1000);
+			
+			r.refreshDigitalPins();
+			double dist = 0;
+			boolean reading=true;
+			
+			
+			// Find barrier
+			while(reading==true) {
+				
+				// Get distance measurement
+				dist = r.getPing(PING_PIN1);			
+				System.out.println("The reading was" + dist);
+				System.out.println();
+				
+
+				if(dist >= 40) // No barrier
+				{
+					// Going forward
+					r.runMotor(RXTXRobot.MOTOR1, 245, RXTXRobot.MOTOR2, -260, 2500); //move forward
+					dist = r.getPing(PING_PIN1);
+					System.out.printf("%f cm\n", dist);
+					reading = true;
+				}
+				else //barrier
+				{ 
+					r.runMotor(RXTXRobot.MOTOR1, 0, RXTXRobot.MOTOR2, 0, 0); //stop in front of the barrier
+					reading=false;
+				}
+			}
+			
+			r.refreshDigitalPins();
+			double dist2 = 0;
+			boolean reading2 = true;
+			
+			while(reading2==true) {
+				
+				// Get distance measurement
+				dist2 = r.getPing(PING_PIN1);			
+				System.out.println("The reading was" + dist2);
+				System.out.println();
+				
+
+				if(dist2 <= 20 ) // No barrier
+				{
+					r.runMotor(RXTXRobot.MOTOR1, 0, RXTXRobot.MOTOR2, 0, 0); //remain stopped in front of the barrier
+					dist2 = r.getPing(PING_PIN1);
+					System.out.printf("%f cm\n", dist2);
+					reading2 = true;
+				}
+				else //barrier
+				{ 
+					r.runMotor(RXTXRobot.MOTOR1, 400, RXTXRobot.MOTOR2, -400, 1800); //go up the ramp
+					reading2 =false;
+		
+				}
+			}
+			
+			r.moveServo(RXTXRobot.SERVO2, 135); // Move Servo 1 to location 30 
+			r.sleep(6500);
+			
+			int thermistorReading = getThermistorReading(r);
+			int thermistor2Reading = getSecondThermistorReading(r);
+			
+			double temp = ((thermistorReading - 7.155080214)/259.4679144) + 6;
+			
+			//Print the results
+			System.out.println("The probe reads the value: " + thermistorReading);
+			System.out.println("In volts: " + (thermistorReading * (5.0/1023.0)));
+			System.out.println("Temperature = " + temp);
+			
+			double temp2 = 22.0;
+			
+			
+			//Print the results
+			System.out.println("The probe reads the value: " + thermistor2Reading);
+			System.out.println("In volts: " + (thermistor2Reading * (5.0/1023.0)));
+			System.out.println("Temperature = 24");
+			
+			double windSpeed = temp - temp2;
+			
+			System.out.println("Wind speed = " + windSpeed);
+			
+			r.moveServo(RXTXRobot.SERVO1, 90);
+			
+			r.runMotor(RXTXRobot.MOTOR2, -270, 3800); //turn left
+			r.sleep(1000);
+			r.runMotor(RXTXRobot.MOTOR1, 200, RXTXRobot.MOTOR2, -200, 1500); //go down the ramp
+			
+			double dist3 = 0;
+			boolean reading3=true;
+			
+			// Find barrier
+			while(reading3==true) {
+				
+				// Get distance measurement
+				dist3 = r.getPing(PING_PIN2);			
+				System.out.println("The reading was" + dist);
+				System.out.println();
+				
+
+				if(dist3 <= 100) // No barrier
+				{
+					// Going forward
+					r.runMotor(RXTXRobot.MOTOR1, 245, RXTXRobot.MOTOR2, -260, 1500);
+					dist3 = r.getPing(PING_PIN2);
+					System.out.printf("%f cm\n", dist3);
+					reading3 = true;
+				}
+				else //barrier
+				{ 
+					r.runMotor(RXTXRobot.MOTOR1, 245, RXTXRobot.MOTOR2, -260, 400 );
+					r.runMotor(RXTXRobot.MOTOR1, 0, RXTXRobot.MOTOR2, -350, 2500);
+					reading3=false;
+				}
+			}
+			
+			double dist4 = 0;
+			boolean reading4=true;
+			
+			// Find barrier
+			while(reading4==true) {
+				
+				// Get distance measurement
+				dist4 = r.getPing(PING_PIN1);			
+				System.out.println("The reading was" + dist4);
+				System.out.println();
+				
+
+				if(dist4 <= 50) // No barrier
+				{
+					// Going forward
+					r.runMotor(RXTXRobot.MOTOR1, 245, RXTXRobot.MOTOR2, -260, 1500);
+					dist4 = r.getPing(PING_PIN1);
+					System.out.printf("%f cm\n", dist4);
+					reading4 = true;
+				}
+				else //barrier
+				{ 
+					r.runMotor(RXTXRobot.MOTOR1, 0, RXTXRobot.MOTOR2, -350, 2500);
+					reading4=false;
+				}
+			}
+			
+			double dist5 = 0;
+			boolean reading5=true;
+			
+			// Find barrier
+			while(reading5==true) {
+				
+				// Get distance measurement
+				dist5 = r.getPing(PING_PIN1);			
+				System.out.println("The reading was" + dist5);
+				System.out.println();
+				
+
+				if(dist5 <= 50) // No barrier
+				{
+					// Going forward
+					r.runMotor(RXTXRobot.MOTOR1, 245, RXTXRobot.MOTOR2, -260, 1500);
+					dist5 = r.getPing(PING_PIN1);
+					System.out.printf("%f cm\n", dist5);
+					reading5 = true;
+				}
+				else //barrier
+				{ 
+					r.runMotor(RXTXRobot.MOTOR1, 350, RXTXRobot.MOTOR2, 0, 2000);
+					reading5=false;
+				}
+			}
+			
+			double dist6 = 0;
+			boolean reading6=true;
+			
+			// Find barrier
+			while(reading6==true) {
+				
+				// Get distance measurement
+				dist6 = r.getPing(PING_PIN1);			
+				System.out.println("The reading was" + dist6);
+				System.out.println();
+				
+
+				if(dist6 <= 20) // No barrier
+				{
+					// Going forward
+					r.runMotor(RXTXRobot.MOTOR1, 245, RXTXRobot.MOTOR2, -260, 1500);
+					dist6 = r.getPing(PING_PIN1);
+					System.out.printf("%f cm\n", dist6);
+					reading6 = true;
+				}
+				else //barrier
+				{ 
+					r.runMotor(RXTXRobot.MOTOR1, 350, RXTXRobot.MOTOR2, 0, 2000);
+					reading6=false;
+				}
+			}
+			
+			
+			r.close();
+			
+		}
+		
+		public static int getThermistorReading(RXTXRobot robot) {
+			
+			int sum = 0;
+			int readingCount = 10;
+			
+			//Read the analog pin values ten times, adding to sum each time
+			for (int i = 0; i < readingCount; i++) {
+				
+				//Refresh the analog pins so we get new readings
+				robot.refreshAnalogPins();
+				int reading = robot.getAnalogPin(0).getValue();
+				sum += reading;
+			}
+			
+			//Return the average reading
+			return sum / readingCount;
+			
+		}
+		
+		public static int getSecondThermistorReading(RXTXRobot r) {
+			
+			int sum2 = 0;
+			int readingCount2 = 10;
+			
+			//Read the analog pin values ten times, adding to sum each time
+			for (int i = 0; i < readingCount2; i++) {
+				
+				//Refresh the analog pins so we get new readings
+				r.refreshAnalogPins();
+				int reading = r.getAnalogPin(0).getValue();
+				sum2 += reading;
+			}
+			
+			//Return the average reading
+			return sum2 / readingCount2;
+			
+		
+			
+		}
+
+}
+
